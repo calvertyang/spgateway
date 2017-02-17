@@ -1,0 +1,15 @@
+table {
+  width: 100%;
+}
+
+table input {
+  width: 100%;
+}
+
+table .title {
+  width: 10%;
+}
+
+input[type="submit"] {
+  margin-top: 2em;
+}

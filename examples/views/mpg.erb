@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MPG API</title>
+  <link rel="stylesheet" type="text/css" href="<%= url("/style.css")%>">
+</head>
+<body>
+  <form action="https://ccore.spgateway.com/MPG/mpg_gateway" method="post">
+    <table>
+      <caption>MPG API</caption>
+      <% @client_options.each do |k, v| %>
+        <tr>
+          <th class="title"><%= k %></th>
+          <td><%= v %></td>
+        </tr>
+      <% end %>
+      <% @params.each do |k, v| %>
+        <tr>
+          <th class="title"><%= k %></th>
+          <td>
+            <%= v %>
+            <input type="hidden" name="<%= k %>" value="<%= v %>">
+          </td>
+        </tr>
+      <% end %>
+      <tr>
+        <td colspan="2"><input type="submit"></td>
+      </tr>
+    </table>
+  </form>
+</body>
+</html>

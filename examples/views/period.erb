@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>信用卡-定期定額 API</title>
+  <link rel="stylesheet" type="text/css" href="<%= url("/style.css")%>">
+</head>
+<body>
+  <form action="https://ccore.spgateway.com/MPG/period" method="post">
+    <table>
+      <caption>信用卡-定期定額 API</caption>
+      <% @client_options.each do |k, v| %>
+        <tr>
+          <th class="title"><%= k %></th>
+          <td><%= v %></td>
+        </tr>
+      <% end %>
+      <% @params.each do |k, v| %>
+        <tr>
+          <th class="title"><%= k %></th>
+          <td>
+            <%= v %>
+            <input type="hidden" name="<%= k %>" value="<%= v %>">
+          </td>
+        </tr>
+      <% end %>
+      <tr>
+        <td colspan="2"><input type="submit"></td>
+      </tr>
+    </table>
+  </form>
+</body>
+</html>
