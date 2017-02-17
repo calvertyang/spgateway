@@ -1,5 +1,6 @@
+# frozen_string_literal: true
 require 'spgateway/version'
 require 'spgateway/client'
 
-module Spgateway
+module Spgateway # :nodoc:
 end

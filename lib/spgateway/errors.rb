@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Spgateway
   # Generic Spgateway exception class.
   class SpgatewayError < StandardError; end

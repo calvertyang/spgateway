@@ -1,0 +1,6 @@
+AllCops:
+  TargetRubyVersion: 2.4
+  Exclude:
+    - tmp/*.rb
+Metrics:
+  Enabled: false

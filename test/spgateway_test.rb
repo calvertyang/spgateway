@@ -1,14 +1,15 @@
 # encoding: utf-8
+# frozen_string_literal: true
 require File.expand_path('../test_helper', __FILE__)
 
 class TestSpgateway < MiniTest::Test
   def setup
-    @client = Spgateway::Client.new({
+    @client = Spgateway::Client.new(
       merchant_id: '123456',
       hash_key: '12345678901234567890123456789012',
       hash_iv: '1234567890123456',
       mode: :test
-    })
+    )
   end
 
   def test_raise_invalid_mode_error
@@ -48,45 +49,51 @@ class TestSpgateway < MiniTest::Test
   end
 
   def test_mpg_check_value
-    check_value = @client.make_check_value :mpg,
+    check_value = @client.make_check_value(
+      :mpg,
       MerchantID: @client.options[:merchant_id],
       TimeStamp: '1451577600',
       Version: '1.1',
       MerchantOrderNo: '20160101001',
       Amt: 100
+    )
 
     assert_equal 'C3D5EABA60966C1206E95FEBB0A8023FB14562A78E2793EBBAD449885F31D8F5', check_value
   end
 
   def test_query_trade_info_check_value
-    check_value = @client.make_check_value :query_trade_info,
+    check_value = @client.make_check_value(
+      :query_trade_info,
       MerchantID: @client.options[:merchant_id],
       MerchantOrderNo: '20160101001',
       Amt: 100
+    )
 
     assert_equal 'E7D095C909A78C57F259EADFAFF6BBEF3F6C0277C52F3EA753B7FF71A8205D38', check_value
   end
 
   def test_credit_card_period_check_value
-    check_value = @client.make_check_value :credit_card_period,
+    check_value = @client.make_check_value(
+      :credit_card_period,
       MerchantID: @client.options[:merchant_id],
       MerchantOrderNo: '20160101001',
       PeriodAmt: 100,
       PeriodType: 'M',
       TimeStamp: '1451577600'
+    )
 
     assert_equal 'C3D59CD4B97AABB9CF49790D41EBD039DC22C9C9B315976FF85021D80D08DB8E', check_value
   end
 
   def test_generate_mpg_params
-    result = @client.generate_mpg_params({
+    result = @client.generate_mpg_params(
       MerchantOrderNo: '20160101001',
       Amt: 100,
       ItemDesc: '一般交易測試',
       Email: 'hello@localhost.com',
       LoginType: 0,
       TimeStamp: '1451577600'
-    })
+    )
 
     expected_result = {
       RespondType: 'String',
@@ -106,81 +113,81 @@ class TestSpgateway < MiniTest::Test
 
   def test_query_trade_info
     skip 'test this if there is public sandbox'
-    result = @client.query_trade_info({
+    result = @client.query_trade_info(
       MerchantOrderNo: 'a465e094',
       Amt: 100
-    })
+    )
 
     assert_equal true, @client.verify_check_code(result)
   end
 
   def test_credit_card_deauthorize
     skip 'test this if there is public sandbox'
-    result = @client.credit_card_deauthorize({
+    result = @client.credit_card_deauthorize(
       MerchantOrderNo: '4e19cab1',
       Amt: 100,
       IndexType: 1
-    })
+    )
 
     assert_equal true, @client.verify_check_code(result)
   end
 
   def test_credit_card_deauthorize_by_merchant_order_no
     skip 'test this if there is public sandbox'
-    result = @client.credit_card_deauthorize_by_merchant_order_no({
+    result = @client.credit_card_deauthorize_by_merchant_order_no(
       MerchantOrderNo: '4e19cab1',
       Amt: 100
-    })
+    )
 
     assert_equal true, @client.verify_check_code(result)
   end
 
   def test_credit_card_deauthorize_by_trade_no
     skip 'test this if there is public sandbox'
-    result = @client.credit_card_deauthorize_by_trade_no({
+    result = @client.credit_card_deauthorize_by_trade_no(
       TradeNo: '16010112345678901',
       Amt: 100
-    })
+    )
 
     assert_equal true, @client.verify_check_code(result)
   end
 
   def test_credit_card_collect_refund
     skip 'test this if there is public sandbox'
-    result = @client.credit_card_collect_refund({
+    result = @client.credit_card_collect_refund(
       MerchantOrderNo: '4e19cab1',
       Amt: 100,
       CloseType: 2,
       IndexType: 1
-    })
+    )
 
     assert_equal 'SUCCESS', result['Status']
   end
 
   def test_credit_card_collect_refund_by_merchant_order_no
     skip 'test this if there is public sandbox'
-    result = @client.credit_card_collect_refund_by_merchant_order_no({
+    result = @client.credit_card_collect_refund_by_merchant_order_no(
       MerchantOrderNo: '4e19cab1',
       Amt: 100,
       CloseType: 2
-    })
+    )
 
     assert_equal 'SUCCESS', result['Status']
   end
 
   def test_credit_card_collect_refund_by_trade_no
     skip 'test this if there is public sandbox'
-    result = @client.credit_card_collect_refund_by_trade_no({
+    result = @client.credit_card_collect_refund_by_trade_no(
       TradeNo: '16010112345678901',
       Amt: 100,
       CloseType: 2
-    })
+    )
 
     assert_equal 'SUCCESS', result['Status']
   end
 
   def test_generate_credit_card_period_params
-    result = @client.generate_credit_card_period_params({
+    result = @client.generate_credit_card_period_params(
       MerchantOrderNo: '4e19cab1',
       ProdDesc: '定期定額交易測試',
       PeriodAmt: 100,
@@ -190,7 +197,7 @@ class TestSpgateway < MiniTest::Test
       PeriodStartType: 1,
       PeriodTimes: '5',
       TimeStamp: '1451577600'
-    })
+    )
 
     expected_result = {
       RespondType: 'String',

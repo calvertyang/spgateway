@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'bundler/gem_tasks'
 require 'rake/testtask'
 
@@ -8,4 +9,4 @@ Rake::TestTask.new do |t|
 end
 
 desc 'Run tests'
-task :default => :test
+task default: [:test]
