@@ -48,12 +48,19 @@ module Spgateway
       param_required! params, [:MerchantOrderNo, :Amt, :ItemDesc, :Email, :LoginType]
 
       post_params = {
+        MerchantID: @options[:merchant_id],
         RespondType: 'String',
         TimeStamp: Time.now.to_i,
-        Version: '1.2'
+        Version: '1.4'
       }.merge!(params)
 
-      generate_params(:mpg, post_params)
+      result = {} # post_params.clone
+      result[:MerchantID] = @options[:merchant_id]
+      result[:TradeInfo] = encode_post_data(URI.encode(post_params.map { |key, value| "#{key}=#{value}" }.join('&')))
+      result[:TradeSha] = make_check_value(:mpg, result)
+      result[:Version] = '1.4'
+
+      result
     end
 
     def query_trade_info(params = {})
@@ -154,8 +161,7 @@ module Spgateway
     def make_check_value(type, params = {})
       case type
       when :mpg
-        check_value_fields = [:Amt, :MerchantID, :MerchantOrderNo, :TimeStamp, :Version]
-        padded = "HashKey=#{@options[:hash_key]}&%s&HashIV=#{@options[:hash_iv]}"
+        return make_mpg_check_value(params)
       when :query_trade_info
         check_value_fields = [:Amt, :MerchantID, :MerchantOrderNo]
         padded = "IV=#{@options[:hash_iv]}&%s&Key=#{@options[:hash_key]}"
@@ -170,6 +176,20 @@ module Spgateway
 
       raw = params.select { |key, _| key.to_s.match(/^(#{check_value_fields.join('|')})$/) }
                   .sort_by { |k, _| k.downcase }.map! { |k, v| "#{k}=#{v}" }.join('&')
+
+      padded = padded % raw
+
+      Digest::SHA256.hexdigest(padded).upcase!
+    end
+
+    def make_mpg_check_value(params)
+      check_value_fields = [:TradeInfo]
+      padded = "HashKey=#{@options[:hash_key]}&%s&HashIV=#{@options[:hash_iv]}"
+
+      param_required! params, check_value_fields
+
+      raw = params.select { |key, _| key.to_s.match(/^(#{check_value_fields.join('|')})$/) }
+                  .sort_by { |k, _| k.downcase }.map! { |k, v| "#{v}" }.join('&')
 
       padded = padded % raw
 
