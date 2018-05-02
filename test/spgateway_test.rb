@@ -49,16 +49,18 @@ class TestSpgateway < MiniTest::Test
   end
 
   def test_mpg_check_value
-    check_value = @client.make_check_value(
-      :mpg,
-      MerchantID: @client.options[:merchant_id],
-      TimeStamp: '1451577600',
-      Version: '1.1',
-      MerchantOrderNo: '20160101001',
-      Amt: 100
+    check_value = @client.make_mpg_check_value(
+      {
+        MerchantID: @client.options[:merchant_id],
+        TradeInfo: '31de71ac4380d423811a5ab1e4e750ef92bf0b78dac746ac8c2d8e19d2aca208b207f56bd9736ea807f636f1445bbba2590a22ca19295f198df6ad99bf8cd35072150c0aef0847f66050aff74ea88fc8866f17afbf4763bef8120630a49e6ddb9a330f9fbcecc1c694296eb3eaafbd34f0a80878d319fdbc10d09f9ecd761cc91064859129eec8c8a15f9752e50df20aa2e3913445ba7f321eb556502b6a6b8ff72161fa26dcdcea6576be710ef4555a2d46b857438112bc44c6500ed372b1e3c6c33bbf08af5e911cc9369b92bb2129366b61078a3eed1feeff70969c78102f',
+        TimeStamp: '1451577600',
+        Version: '1.4',
+        MerchantOrderNo: '20160101001',
+        Amt: 100
+      }
     )
 
-    assert_equal 'C3D5EABA60966C1206E95FEBB0A8023FB14562A78E2793EBBAD449885F31D8F5', check_value
+    assert_equal '99900C0DA5576BA6D14C98D2299AF13DD6631C57EDA2AC7ABE638E0C07347B89', check_value
   end
 
   def test_query_trade_info_check_value
@@ -98,14 +100,15 @@ class TestSpgateway < MiniTest::Test
     expected_result = {
       RespondType: 'String',
       TimeStamp: '1451577600',
-      Version: '1.2',
+      Version: '1.4',
       MerchantOrderNo: '20160101001',
       Amt: 100,
       ItemDesc: '一般交易測試',
       Email: 'hello@localhost.com',
       LoginType: 0,
       MerchantID: '123456',
-      CheckValue: 'DCCBB09E7E5E95F7778C624E94AF60713F0EDE4A06811754E15B41F61E52502E'
+      TradeInfo: '31de71ac4380d423811a5ab1e4e750ef92bf0b78dac746ac8c2d8e19d2aca208b207f56bd9736ea807f636f1445bbba2590a22ca19295f198df6ad99bf8cd35072150c0aef0847f66050aff74ea88fc8866f17afbf4763bef8120630a49e6ddb9a330f9fbcecc1c694296eb3eaafbd34f0a80878d319fdbc10d09f9ecd761cc91064859129eec8c8a15f9752e50df20aa2e3913445ba7f321eb556502b6a6b8ff72161fa26dcdcea6576be710ef4555a2d46b857438112bc44c6500ed372b1e3c6c33bbf08af5e911cc9369b92bb2129366b61078a3eed1feeff70969c78102f',
+      CheckValue: '99900C0DA5576BA6D14C98D2299AF13DD6631C57EDA2AC7ABE638E0C07347B89'
     }
 
     assert_equal expected_result, result
