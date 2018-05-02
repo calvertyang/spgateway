@@ -1,9 +1,6 @@
 [![Gem Version](https://badge.fury.io/rb/spgateway_client.svg)](https://badge.fury.io/rb/spgateway_client)
 [![Build Status](https://travis-ci.org/CalvertYang/spgateway.svg?branch=master)](https://travis-ci.org/CalvertYang/spgateway)
 
-# 來源網址
-forked from [CalvertYang/spgateway](https://github.com/CalvertYang/spgateway)
-
 # 智付通 Spgateway
 
 這是智付通 API 的 Ruby 包裝，更多資訊請參閱 [API 文件專區](https://www.spgateway.com/info/site_description/api_description)。
@@ -41,7 +38,6 @@ test_client.query_trade_info({
 ```
 
 本文件撰寫時，智付通共有 5 個 API：
-本分支只更新 MPG API
 
 API 名稱              | 版本 | 說明
 ---                  | --- | ---
@@ -75,7 +71,7 @@ MPG API              | 1.0.9 | MPG(Multi Payment Gateway)，單一串接多種�
 
 ##### MPG、信用卡-定期定額
 ```bash
-git clone git@github.com:SecondDim/spgateway.git
+git clone git@github.com:CalvertYang/spgateway.git
 cd spgateway
 bundle install
 ruby examples/server.rb
